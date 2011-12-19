@@ -1,0 +1,19 @@
+ttrss2calibre
+
+Generates a calibre news recipe of unread TTRSS feeds
+
+The result is one calibre recipe consisting of all the single RSS feeds of a
+TinyTiny RSS (TTRSS) installation.  The feeds point to
+public.php?op=rss&view_mode=unread&id=1key=abcde123" and are therefore readable
+without login.
+
+In order for this script to work the TTRSS installation has to be patched.
+Please add the following case statement to api/index.html:
+
+               case "getFeedAccessKey":
+                        $feed_id=db_escape_string($_REQUEST["feed_id"]);
+                        $feeds = get_feed_access_key($link, $feed_id, false);
+                        print api_wrap_reply(API_STATUS_OK, $seq, $feeds);
+                        break;
+
+Background: Currently there is no API to get the feed specific access keys.
